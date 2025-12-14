@@ -13,6 +13,12 @@ https://gitgrade-repo-mirror.streamlit.app
 
 ---
 
+## 🎥 Video Demonstration
+
+📽️ **Demo Video:**  
+https://www.loom.com/share/5b63f30ffccf46c88c60ac47e56e233d
+---
+
 ## 🎯 Problem Statement
 
 Students and early-career developers often maintain GitHub repositories, but they rarely know:
@@ -133,4 +139,5 @@ These are intentional trade-offs to keep the system **fast, clear, and explainab
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
+
 
