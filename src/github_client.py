@@ -1,4 +1,15 @@
 import requests
+import os
+
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+
+HEADERS = {
+    "Accept": "application/vnd.github+json"
+}
+
+if GITHUB_TOKEN:
+    HEADERS["Authorization"] = f"Bearer {GITHUB_TOKEN}"
+
 
 def analyze_repo(repo_url):
     parts = repo_url.rstrip("/").split("/")
@@ -6,12 +17,22 @@ def analyze_repo(repo_url):
 
     base_api = f"https://api.github.com/repos/{owner}/{repo}"
 
-    repo_res = requests.get(base_api).json()
-    if "message" in repo_res:
-        raise Exception("Repository not found")
+    repo_res = requests.get(base_api, headers=HEADERS).json()
 
-    commits_res = requests.get(base_api + "/commits").json()
-    contents_res = requests.get(base_api + "/contents").json()
+    # Handle errors explicitly
+    if "message" in repo_res:
+        raise Exception(repo_res["message"])
+
+    commits_res = requests.get(
+        base_api + "/commits",
+        headers=HEADERS,
+        params={"per_page": 100}
+    ).json()
+
+    contents_res = requests.get(
+        base_api + "/contents",
+        headers=HEADERS
+    ).json()
 
     readme_exists = False
     if isinstance(contents_res, list):
